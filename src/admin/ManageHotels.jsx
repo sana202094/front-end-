@@ -6,7 +6,7 @@ const ManageHotels = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingHotel, setEditingHotel] = useState(null);
   const [allChambres, setAllChambres] = useState([]);
-
+  
   const [formData, setFormData] = useState({
     nomh: '',
     localisation: {
@@ -34,18 +34,17 @@ const ManageHotels = () => {
 
   const fetchChambres = async () => {
     try {
-      const res = await axios.get('/chambre/chambres'); // Assure-toi que ce endpoint existe
+      const res = await axios.get('/chambre/chambres'); 
       setAllChambres(res.data);
     } catch (err) {
       console.error('Error fetching chambres:', err);
     }
   };
-
   useEffect(() => {
     fetchHotels();
     fetchChambres();
-  }, []);
-
+  }, 
+  []);
   const handleChange = e => {
     const { name, value } = e.target;
     if (name.startsWith('localisation.')) {
@@ -76,7 +75,6 @@ const ManageHotels = () => {
       };
     });
   };
-
   const openModal = (hotel = null) => {
     setEditingHotel(hotel);
     setFormData(
@@ -155,29 +153,29 @@ const ManageHotels = () => {
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold">Gérer les hôtels</h2>
-        <button onClick={() => openModal()} className="bg-blue-600 text-white px-4 py-2 rounded">+ Ajouter un hôtel</button>
+        <button onClick={() => openModal()} className="bg-violet-600 text-white px-4 py-2 rounded">+ Ajouter un hôtel</button>
       </div>
 
       <div className="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table className="min-w-full table-auto">
-          <thead className="bg-gray-100">
+          <table className="min-w-full table-auto border border-black-200 bg-white shadow-md rounded-xl overflow-hidden">
+          <thead className="bg-black-100">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Nom</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Téléphone</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Category</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Description</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Localisation</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Actions</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Nom</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Téléphone</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Category</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Description</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Localisation</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Actions</th>
             </tr>
           </thead>
           <tbody>
             {hotels.map(hotel => (
               <tr key={hotel._id} className="border-b hover:bg-gray-50">
-                <td className="px-6 py-4 text-sm text-gray-900">{hotel.nomh}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{hotel.numTelephone}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{hotel.categories}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{hotel.description}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">
+                <td className="px-6 py-4 text-sm text-black-900">{hotel.nomh}</td>
+                <td className="px-6 py-4 text-sm text-black-500">{hotel.numTelephone}</td>
+                <td className="px-6 py-4 text-sm text-black-500">{hotel.categories}</td>
+                <td className="px-6 py-4 text-sm text-black-500">{hotel.description}</td>
+                <td className="px-6 py-4 text-sm text-black-500">
                   {hotel.localisation?.address}, {hotel.localisation?.city}
                 </td>
                 <td className="px-6 py-4 text-sm text-gray-500">
@@ -192,55 +190,162 @@ const ManageHotels = () => {
         </table>
       </div>
       {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <form onSubmit={handleSubmit} className="bg-white p-6 overflow-y-auto rounded space-y-4 w-full max-w-md shadow-lg">
-            <h2 className="text-lg font-bold">{editingHotel ? 'Edit Hotel' : 'Add Hotel'}</h2>
-            <input name="nomh" placeholder="Name" value={formData.nomh} onChange={handleChange} className="border p-2 w-full" required />
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-6 overflow-y-auto rounded-lg w-full max-w-lg max-h-[90vh] shadow-xl space-y-4"
+    >
+      <h2 className="text-xl font-bold text-gray-800 mb-4">
+        {editingHotel ? 'Modifier un hôtel' : 'Ajouter un hôtel'}
+      </h2>
 
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold">Localisation</h3>
-              <input name="localisation.address" placeholder="Address" value={formData.localisation.address} onChange={handleChange} className="border p-2 w-full" required />
-              <input name="localisation.city" placeholder="City" value={formData.localisation.city} onChange={handleChange} className="border p-2 w-full" />
-              <input name="localisation.country" placeholder="Country" value={formData.localisation.country} onChange={handleChange} className="border p-2 w-full" />
-              <input name="localisation.latitude" placeholder="Latitude" value={formData.localisation.latitude} onChange={handleChange} className="border p-2 w-full" />
-              <input name="localisation.longitude" placeholder="Longitude" value={formData.localisation.longitude} onChange={handleChange} className="border p-2 w-full" />
-            </div>
+      {/* Nom */}
+      <div>
+        <label className="block text-sm font-medium mb-1">Nom de l'hôtel</label>
+        <input
+          name="nomh"
+          placeholder="Nom de l'hôtel"
+          value={formData.nomh}
+          onChange={handleChange}
+          className="border p-2 w-full rounded"
+          required
+        />
+      </div>
 
-            <input name="numTelephone" placeholder="Phone Number" value={formData.numTelephone} onChange={handleChange} className="border p-2 w-full" required />
-
-            <select name="categories" value={formData.categories} onChange={handleChange} className="border p-2 w-full">
-              {['1 étoile', '2 étoiles', '3 étoiles', '4 étoiles', '5 étoiles', 'Boutique', 'Luxueux'].map(opt => (
-                <option key={opt} value={opt}>{opt}</option>
-              ))}
-            </select>
-
-            <textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} className="border p-2 w-full" required />
-            <input name="images" placeholder="Image URLs (comma separated)" value={formData.images} onChange={handleChange} className="border p-2 w-full" />
-
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold">Chambres</h3>
-              <div className="max-h-16 overflow-y-auto border p-2 rounded">
-                {allChambres.map(chambre => (
-                  <label key={chambre._id} className="block text-sm">
-                    <input
-                      type="checkbox"
-                      checked={formData.chambres.includes(chambre._id)}
-                      onChange={() => handleChambreChange(chambre._id)}
-                      className="mr-2"
-                    />
-                    {chambre.nom || chambre.numCh|| chambre._id}
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-2">
-              <button type="button" onClick={() => setModalOpen(false)} className="px-3 py-1 bg-gray-300 rounded">Annuler</button>
-              <button type="submit" className="px-3 py-1 bg-green-500 text-white rounded">Sauvegarder</button>
-            </div>
-          </form>
+      {/* Localisation */}
+      <div>
+        <h3 className="text-md font-semibold text-gray-700 mb-2">Localisation</h3>
+        <div className="space-y-2">
+          <input
+            name="localisation.address"
+            placeholder="Adresse"
+            value={formData.localisation.address}
+            onChange={handleChange}
+            className="border p-2 w-full rounded"
+            required
+          />
+          <input
+            name="localisation.city"
+            placeholder="Ville"
+            value={formData.localisation.city}
+            onChange={handleChange}
+            className="border p-2 w-full rounded"
+          />
+          <input
+            name="localisation.country"
+            placeholder="Pays"
+            value={formData.localisation.country}
+            onChange={handleChange}
+            className="border p-2 w-full rounded"
+          />
+          <input
+            name="localisation.latitude"
+            placeholder="Latitude"
+            value={formData.localisation.latitude}
+            onChange={handleChange}
+            className="border p-2 w-full rounded"
+          />
+          <input
+            name="localisation.longitude"
+            placeholder="Longitude"
+            value={formData.localisation.longitude}
+            onChange={handleChange}
+            className="border p-2 w-full rounded"
+          />
         </div>
-      )}
+      </div>
+
+      {/* Numéro de téléphone */}
+      <div>
+        <label className="block text-sm font-medium mb-1">Numéro de téléphone</label>
+        <input
+          name="numTelephone"
+          placeholder="Ex: +33 6 12 34 56 78"
+          value={formData.numTelephone}
+          onChange={handleChange}
+          className="border p-2 w-full rounded"
+          required
+        />
+      </div>
+
+      {/* Catégorie */}
+      <div>
+        <label className="block text-sm font-medium mb-1">Catégorie</label>
+        <select
+          name="categories"
+          value={formData.categories}
+          onChange={handleChange}
+          className="border p-2 w-full rounded"
+        >
+          {['1 étoile', '2 étoiles', '3 étoiles', '4 étoiles', '5 étoiles', 'Boutique', 'Luxueux'].map(opt => (
+            <option key={opt} value={opt}>{opt}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Description */}
+      <div>
+        <label className="block text-sm font-medium mb-1">Description</label>
+        <textarea
+          name="description"
+          placeholder="Décrivez l'hôtel ici..."
+          value={formData.description}
+          onChange={handleChange}
+          className="border p-2 w-full rounded"
+          required
+        />
+      </div>
+
+      {/* Images */}
+      <div>
+        <label className="block text-sm font-medium mb-1">URL des images (séparées par des virgules)</label>
+        <input
+          name="images"
+          placeholder="https://... , https://..."
+          value={formData.images}
+          onChange={handleChange}
+          className="border p-2 w-full rounded"
+        />
+      </div>
+
+      {/* Chambres */}
+      <div>
+        <h3 className="text-md font-semibold text-gray-700 mb-2">Chambres disponibles</h3>
+        <div className="max-h-32 overflow-y-auto border p-2 rounded space-y-1">
+          {allChambres.map(chambre => (
+            <label key={chambre._id} className="block text-sm">
+              <input
+                type="checkbox"
+                checked={formData.chambres.includes(chambre._id)}
+                onChange={() => handleChambreChange(chambre._id)}
+                className="mr-2"
+              />
+              {chambre.nom || chambre.numCh || chambre._id}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex justify-end gap-3 pt-4">
+        <button
+          type="button"
+          onClick={() => setModalOpen(false)}
+          className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-sm"
+        >
+          Annuler
+        </button>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded text-sm"
+        >
+          Sauvegarder
+        </button>
+      </div>
+    </form>
+  </div>
+)}
+
     </div>
   );
 };

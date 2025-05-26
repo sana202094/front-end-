@@ -1,12 +1,10 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-
 const Contact = () => {
   return (
     <div className="bg-[#fafafa] min-h-screen flex flex-col font-sans">
       <Header />
-
       <main className="flex-grow container mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <h1 className="text-3xl md:text-4xl font-semibold text-gray-800 tracking-tight">
@@ -18,7 +16,6 @@ const Contact = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Formulaire de contact */}
           <form className="bg-white p-10 rounded-2xl shadow-lg border border-gray-300 space-y-6">
             <div>
               <label className="block text-sm text-gray-700 mb-2">Nom et prénom</label>
@@ -42,7 +39,8 @@ const Contact = () => {
                 rows="5"
                 placeholder="Merci de nous fournir plus d'informations..."
                 className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#005f8d] focus:outline-none transition resize-none"
-              ></textarea>
+              >
+              </textarea>
             </div>
             <button
               type="submit"
@@ -51,8 +49,6 @@ const Contact = () => {
               Envoyer votre message
             </button>
           </form>
-
-          {/* Informations de l'entreprise et carte */}
           <div className="space-y-8">
             <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-300 space-y-4">
               <h2 className="text-xl font-semibold text-gray-900">Nos Coordonnées</h2>
@@ -79,5 +75,4 @@ const Contact = () => {
     </div>
   );
 };
-
 export default Contact;

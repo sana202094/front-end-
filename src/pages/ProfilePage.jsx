@@ -5,7 +5,7 @@ function ProfilePage() {
   const navigate = useNavigate();
 
   const user = {
-    name: 'Jean Dupont',
+    nom: 'Jean Dupont',
     email: 'jean@example.com'
   };
 
@@ -19,7 +19,7 @@ function ProfilePage() {
   return (
     <div>
       <h2>Profil</h2>
-      <p>Nom : {user.name}</p>
+      <p>Nom : {user.nom}</p>
       <p>Email : {user.email}</p>
       <button onClick={() => navigate('/profile/edit')}>Éditer</button>
       <button onClick={handleDelete}>Supprimer</button>

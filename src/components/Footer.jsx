@@ -8,7 +8,6 @@ const Footer = () => {
           <a href="#" className="hover:text-violet-500">tik tok<p>:Miha Travel Agency</p></a>
           <a href="#" className="hover:text-violet-500 inline-flex">Téléphone<p>:57093791</p></a>
           <a href="#" className="hover:text-violet-500">Email<p>:commercialmihatravelagency@gmail.com</p></a>
-          
         </div>
       </footer>
     );

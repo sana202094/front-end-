@@ -94,7 +94,7 @@ const HotelDetails = () => {
               />
               <h3 className="text-xl font-semibold mt-2">Chambre {chambre.numCh}</h3>
               <p>Type: {chambre.typeCh}</p>
-              <p>Tarif: {chambre.tarif} €</p>
+              <p>Tarif: {chambre.tarif} DT</p>
               <button
                 onClick={() => handleReserve(chambre)}
                 className="mt-2 w-full bg-violet-600 text-white py-2 rounded hover:bg-violet-700"

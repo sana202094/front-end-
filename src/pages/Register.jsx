@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
-
+import logo from '../assets/logo.png';
 const Register = () => {
   const [form, setForm] = useState({
     name: '',
@@ -31,17 +31,19 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-200 via-cyan-100 to-white flex items-center justify-center px-4">
-      <div className="bg-white bg-opacity-90 p-8 rounded-3xl shadow-2xl w-full max-w-md backdrop-blur-md">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-extrabold text-blue-700">Bienvenue à Miha Travel 🌍</h2>
-          <p className="text-gray-600 text-sm mt-2">Inscrivez-vous pour commencer votre aventure</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-violet-200 via-cyan-100 to-white flex items-center justify-center px-4">
+      <div className="bg-white bg-opacity-90 py-10 px-6 rounded-3xl shadow-2xl w-full max-w-md backdrop-blur-md">
+          <div className="flex flex-col items-center">
+                    <img src={logo} alt="Miha Travel Logo" className="w-32 h-32 mb-4" />
+                    <h2 className="text-3xl font-bold text-violet-700 mb-2">Bienvenue chez Miha Travel</h2>
+                    
+                    <p className="text-gray-600 text-sm mt-2">Inscrivez-vous pour commencer votre aventure</p>
+                  </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
             placeholder="Nom complet"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             required
@@ -49,7 +51,7 @@ const Register = () => {
           <input
             type="email"
             placeholder="Email"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             required
@@ -57,7 +59,7 @@ const Register = () => {
           <input
             type="tel"
             placeholder="Téléphone"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
             required
@@ -65,7 +67,7 @@ const Register = () => {
           <input
             type="number"
             placeholder="Âge"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
             value={form.age}
             onChange={(e) => setForm({ ...form, age: e.target.value })}
             required
@@ -73,7 +75,7 @@ const Register = () => {
           <input
             type="text"
             placeholder="État"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
             value={form.etat}
             onChange={(e) => setForm({ ...form, etat: e.target.value })}
             required
@@ -81,21 +83,21 @@ const Register = () => {
           <input
             type="password"
             placeholder="Mot de passe"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
             required
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300"
+            className="w-full bg-violet-600 text-white py-3 rounded-lg hover:bg-violet-700 transition duration-300"
           >
             S'inscrire
           </button>
         </form>
         {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
         <p className="text-center text-sm text-gray-500 mt-6">
-          Déjà un compte ? <a href="/login" className="text-blue-600 hover:underline">Connectez-vous</a>
+          Déjà un compte ? <a href="/login" className="text-violet-600 hover:underline">Connectez-vous</a>
         </p>
       </div>
     </div>

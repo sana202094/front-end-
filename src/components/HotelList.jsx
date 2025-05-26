@@ -1,13 +1,10 @@
-// components/HotelList.jsx
 import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import HotelCard from './HotelCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';  // Updated import for Swiper CSS
-
+import 'swiper/css';  
 const HotelList = ({ hotels }) => {
     if (!hotels.length) return <p className="text-center p-6">Aucun hôtel trouvé.</p>;
-  
     return (
       <div className="p-6 bg-gray-50">
         <h2 className="text-2xl font-bold mb-4">Découvrez Nos Hôtels</h2>
@@ -30,6 +27,5 @@ const HotelList = ({ hotels }) => {
       </div>
     );
   };
-  
 
 export default HotelList;

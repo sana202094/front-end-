@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../api/axios';
-
 const ManageReservations = () => {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +13,6 @@ const ManageReservations = () => {
     checkOutDate: '',
     totalPrice: 0,
   });
-
   const [users, setUsers] = useState([]);
   const [hotels, setHotels] = useState([]);
   const [chambres, setChambres] = useState([]);
@@ -29,27 +27,34 @@ const ManageReservations = () => {
       setLoading(false);
     }
   };
-
-  // Fetch users, hotels, and chambres for dropdowns
-  /*const fetchDropdownData = async () => {
-    try {
-      const usersRes = await axios.get('/api/users');
-      const hotelsRes = await axios.get('/hotel/hotels');
-      const chambresRes = await axios.get('/chambre/chambres');
-      setUsers(usersRes.data);
-      setHotels(hotelsRes.data);
-      setChambres(chambresRes.data);
-    } catch (err) {
-      console.error('Error fetching dropdown data:', err);
-      setError('Failed to fetch data for dropdowns.');
-    }
-  };*/
-
+  const useDropdownData = () => {
+    const [users, setUsers] = useState([]);
+    const [hotels, setHotels] = useState([]);
+    const [chambres, setChambres] = useState([]);
+    const [error, setError] = useState(null);
+    const fetchDropdownData = async () => {
+      try {
+        const [usersRes, hotelsRes, chambresRes] = await Promise.all([
+          axios.get('/user/users'),
+          axios.get('/hotel/hotels'),
+          axios.get('/chambre/chambres'),
+        ]);
+        setUsers(usersRes.data);
+        setHotels(hotelsRes.data);
+        setChambres(chambresRes.data);
+      } catch (err) {
+        console.error('Erreur lors du chargement des données pour les menus déroulants :', err);
+        setError('Échec du chargement des données.');
+      }
+    };
+    useEffect(() => {
+      fetchDropdownData();
+    }, []);
+    return { users, hotels, chambres, error };
+  };
   useEffect(() => {
     fetchReservations();
   }, []);
-
- 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewReservation((prevState) => ({
@@ -60,19 +65,15 @@ const ManageReservations = () => {
       calculateTotalPrice();
     }
   };
-
-  
   const calculateTotalPrice = async () => {
     if (newReservation.hotelId && newReservation.chambreId && newReservation.checkInDate && newReservation.checkOutDate) {
       const hotel = hotels.find(hotel => hotel._id === newReservation.hotelId);
       const chambre = chambres.find(chambre => chambre._id === newReservation.chambreId);
-
       if (hotel && chambre) {
         const checkIn = new Date(newReservation.checkInDate);
         const checkOut = new Date(newReservation.checkOutDate);
         const numberOfNights = (checkOut - checkIn) / (1000 * 3600 * 24);
-
-        const total = numberOfNights * chambre.price * hotel.pricePerNight; // Modify this logic according to your pricing model
+        const total = numberOfNights * chambre.price * hotel.pricePerNight; 
         setNewReservation(prev => ({ ...prev, totalPrice: total }));
       }
     }
@@ -98,7 +99,7 @@ const ManageReservations = () => {
     }
   };
   const handleDelete = async (id) => {
-    if (confirm('Are you sure you want to delete this reservation?')) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?')) {
       try {
         await axios.delete(`/reservations/${id}`);
         fetchReservations();
@@ -108,21 +109,17 @@ const ManageReservations = () => {
       }
     }
   };
-
   if (loading) return <div className="p-4">Chargement des réservations...</div>;
   if (error) return <div className="p-4 text-red-500">{error}</div>;
-
   return (
     <div className="p-6">
       <h2 className="text-2xl font-semibold mb-6">Gestion des réservations</h2>
-
       <button
         onClick={() => setShowForm(!showForm)}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-6"
+        className="px-4 py-2 bg-violet-500 text-white rounded hover:bg-violet-600 mb-6"
       >
         {showForm ? 'Cancel' : 'Ajouter  réservation'}
       </button>
-
       {showForm && (
         <form onSubmit={handleFormSubmit} className="space-y-4 mb-6">
           <div>
@@ -143,7 +140,6 @@ const ManageReservations = () => {
               ))}
             </select>
           </div>
-
           <div>
             <label htmlFor="hotelId" className="block">Hotel ID:</label>
             <select
@@ -162,7 +158,6 @@ const ManageReservations = () => {
               ))}
             </select>
           </div>
-
           <div>
             <label htmlFor="chambreId" className="block">Chambre ID:</label>
             <select
@@ -181,7 +176,6 @@ const ManageReservations = () => {
               ))}
             </select>
           </div>
-
           <div>
             <label htmlFor="checkInDate" className="block">Date d'arrivée :</label>
             <input
@@ -194,7 +188,6 @@ const ManageReservations = () => {
               required
             />
           </div>
-
           <div>
             <label htmlFor="checkOutDate" className="block">Date de départ :</label>
             <input
@@ -207,7 +200,6 @@ const ManageReservations = () => {
               required
             />
           </div>
-
           <div>
             <label htmlFor="totalPrice" className="block">Prix ​​total:</label>
             <input
@@ -219,27 +211,25 @@ const ManageReservations = () => {
               className="p-2 border border-gray-300 rounded w-full"
             />
           </div>
-
           <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
             Créer une réservation
           </button>
         </form>
       )}
-
       {reservations.length === 0 ? (
         <p>Aucune réservation trouvée.</p>
       ) : (
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
-          <table className="min-w-full table-auto">
+          <table className="min-w-full bg-white border border-gray-300 rounded">
             <thead className="bg-gray-100">
               <tr>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Client</th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Hotel</th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Chambre</th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Dates</th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Total</th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Status</th>
-                <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Actions</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Client</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Hotel</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Chambre</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Dates</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Total</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Status</th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-black-700">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -272,7 +262,12 @@ const ManageReservations = () => {
                           Annuler
                         </button>
                       )}
-                
+                      <button
+                        onClick={() => handleDelete(reservation._id)}
+                        className="px-3 py-1 bg-red-500 text-white rounded text-sm ml-2"
+                      >
+                        Supprimer
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -284,5 +279,4 @@ const ManageReservations = () => {
     </div>
   );
 };
-
 export default ManageReservations;

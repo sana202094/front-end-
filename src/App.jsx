@@ -15,35 +15,33 @@ import ManageReservations from './admin/ManageReservations';
 import ManageUsers from './admin/ManageUsers';
 import ChambreDetails from './pages/ChambreDetails';
 import MesReservations from './pages/MesReservations';
-
-
+import AdminRoute from './components/AdminRoute'; // 👈 import
 const App = () => {
   return (
     <Router>
       <Routes>
+        {/* Routes publiques */}
         <Route path="/" element={<Home />} />
         <Route path="/hotels" element={<Hotels />} />
         <Route path="/hotel/:id" element={<HotelDetails />} />
         <Route path="/chambre/:chambreId" element={<ChambreDetails />} />
         <Route path="/tunisie" element={<TunisiePage />} />
-          <Route path="/etranger" element={<EtrangerPage />} />
-
-       <Route path="/account" element={<Account />} />
+        <Route path="/etranger" element={<EtrangerPage />} />
+        <Route path="/account" element={<Account />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
-        <Route path="/MesReservations" element={<MesReservations/>} />
+        <Route path="/MesReservations" element={<MesReservations />} />
 
-        {/* Admin Routes */}
-        <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/admin/hotels" element={<ManageHotels />} />
-        <Route path="/admin/reservations" element={<ManageReservations />} />
-        <Route path="/admin/users" element={<ManageUsers />} />
-      
+        {/* Routes admin protégées */}
+        <Route path="/admin/dashboard" element={<AdminRoute><Dashboard /></AdminRoute>} />
+        <Route path="/admin/hotels" element={<AdminRoute><ManageHotels /></AdminRoute>} />
+        <Route path="/admin/reservations" element={<AdminRoute><ManageReservations /></AdminRoute>} />
+        <Route path="/admin/users" element={<AdminRoute><ManageUsers /></AdminRoute>} />
+        
       </Routes>
     </Router>
   );
 };
-
 export default App;

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -8,27 +9,30 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      const res = await axios.post('/users/login', { email, password });
-      localStorage.setItem('user', JSON.stringify(res.data));
+ const handleLogin = async (e) => {
+  e.preventDefault();
+  setError('');
+  try {
+    const res = await axios.post('/users/login', { email, password });
+    localStorage.setItem('user', JSON.stringify(res.data));
+
+    // Redirection selon le rôle
+    if (res.data.isAdmin) {
+      navigate('/admin/dashboard');
+    } else {
       navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Erreur de connexion');
     }
-  };
+  } catch (err) {
+    setError(err.response?.data?.message || 'Erreur de connexion');
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-200 via-white to-teal-100 flex items-center justify-center px-4">
-      <div className="bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-2xl w-full max-w-md">
+      <div className="bg-white/80 backdrop-blur-md py-10 px-6 rounded-3xl shadow-2xl w-full max-w-md">
         <div className="flex flex-col items-center">
-          <img
-            src="/miha-logo.png"
-            alt="Miha Travel Logo"
-            className="w-20 h-20 mb-4"
-          />
+          <img src={logo} alt="Miha Travel Logo" className="w-32 h-32 mb-4" />
           <h2 className="text-3xl font-bold text-violet-700 mb-2">Bienvenue chez Miha Travel</h2>
           <p className="text-gray-500 mb-6 text-center">Connectez-vous pour explorer le monde 🌍</p>
         </div>
